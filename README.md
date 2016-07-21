@@ -1,7 +1,7 @@
 # Ping Pong Cryptor
-A simple Encryption app written in JavaFX based on the Alogrithm found in the module of Python called "this"
+A simple Encryption app written in JavaFX based on the Algorithm found in the module in Python called "this"
 
-![Demo](https://github.com/iamaamir/PPC/blob/master/screen-shots/demo.gif?raw=true "ScreenShot")
+![Demo](https://github.com/iamaamir/PPC/blob/master/screen-shots/demo.gif?raw=true "Demo")
 
 ###Note:
 This is a Toy app, Do not use it for any Personal Purpose
