@@ -5,3 +5,6 @@ A simple Encryption app written in JavaFX based on the Alogrithm found in the mo
 
 ##Note:
 This is a Toy app, Do not use it for any Personal Purpose
+
+####Download the Standalone jar Below
+####[Download](https://github.com/iamaamir/PPC/blob/master/dist/PingPngCryptor.jar?raw=true)
