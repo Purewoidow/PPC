@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.92" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pingpongcryptor.FXMLDocumentController">
+   <children>
+      <VBox>
+         <children>
+            <Label text="INPUT" textFill="#078ffa" />
+            <TextArea fx:id="input" promptText="Enter Text Here" text="How it works? &#10;Type  some text in this box and hit the Encrypt/Decrypt button and wait for the task to Complete.&#10;You can also stop the the task by clicking the X red image(this will show while task will be running).&#10;To Decrypt the text simply copy the Encrypted text from the OUTPUT box into INPUT box &#10;and hit Encrypt/Decrypt button&#10;You can also Click &quot;Demo Text&quot; Link on the right to get some Demo Text&#10;Enjoy :)" />
+            <HBox>
+               <children>
+                  <Label fx:id="counter" textFill="#2fd007" />
+                  <Pane disable="true" HBox.hgrow="ALWAYS" />
+                  <Hyperlink onAction="#fillWithDemoText" text="Demo Text" />
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+      <Button fx:id="btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#encrypt" text="Encrypt / Decrypt" textAlignment="CENTER" VBox.vgrow="NEVER" />
+      <VBox>
+         <children>
+            <Label text="OUTPUT" textFill="#078ffa" />
+            <TextArea fx:id="output" editable="false" />
+            <HBox minHeight="20.0">
+               <children>
+                  <Label fx:id="progressMsg" textFill="#2fd007">
+
+                     <font>
+                        <Font size="13.0" />
+                     </font></Label>
+                  <Label fx:id="progress" textFill="#078ffa">
+
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin></Label>
+                  <Label fx:id="stopTask" alignment="CENTER_RIGHT" contentDisplay="RIGHT" onMouseClicked="#cancleTask" visible="false">
+                     <graphic>
+                        <ImageView nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@sign-error.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</VBox>
