@@ -1,23 +1,23 @@
 package pingpongcryptor;
 
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
-import javafx.application.Platform;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import java.util.HashMap;
+import javafx.concurrent.Task;
+import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.concurrent.Service;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.application.Platform;
+import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.TextArea;
 import static javafx.concurrent.Worker.State.RUNNING;
-import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 
 /**
  * FXML Controller class
@@ -43,7 +43,7 @@ public class FXMLDocumentController implements Initializable {
 
     final ImageView DONE_ICON = new ImageView(new Image(getClass().getResourceAsStream("sign-check.png")));
 
-    StringBuilder DemoText;
+    StringBuilder demoText;
 
     private Map<Character, Character> encodingMap;
 
@@ -57,7 +57,6 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void encrypt(ActionEvent event) {
-
         progressMsg.setText("");
         progressMsg.setGraphic(null);
         progress.setTextFill(Color.web("#078ffa"));
@@ -77,20 +76,20 @@ public class FXMLDocumentController implements Initializable {
                 @Override
                 protected Void call() throws Exception {
                     StringBuilder result = new StringBuilder();
-                    float len = input.getText().length();
+                    String inputText = input.getText();
+                    final float INPUT_LEN = inputText.length();
 
                     start = System.nanoTime();
 
-                    for (char c : input.getText().toCharArray()) {
+                    for (char c : inputText.toCharArray()) {
                         Character ch = encodingMap.getOrDefault(c, c);
                         result.append(ch);
 
-                        String percent = String.format("%.2f", (result.length() / len) * 100);
+                        String percent = String.format("%.2f", (result.length() / INPUT_LEN) * 100);
                         updateMessage("Processing... " + percent + "%");
 
                         if (isCancelled()) {
                             updateMessage("Task Was Cancelled " + percent + "% was done");
-                            progress.setTextFill(Color.RED);
                             break;
                         }
 //                        updateMessage("Processing... " +len +"/"+result.length());
@@ -112,6 +111,8 @@ public class FXMLDocumentController implements Initializable {
                     updateMessage("");
 //        this.succeeded();
                 }
+                
+                
 
             };
         }
@@ -136,6 +137,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void cancleTask() {
+        progress.setTextFill(Color.RED);
         task.cancel();
     }
 
@@ -179,7 +181,7 @@ public class FXMLDocumentController implements Initializable {
         } //if text was generated before fill the input with some random text > 200000 characteres
         else {
             //just fill with some random data
-            input.setText(DemoText.substring(0, (int) (200000 + Math.random() * 500)));
+            input.setText(demoText.substring(0, (int) (200000 + Math.random() * 500)));
         }
 
     }//fillWithDemoText ends
@@ -219,7 +221,7 @@ public class FXMLDocumentController implements Initializable {
      */
     private void init() {
         encodingMap = new HashMap<>(52);
-        DemoText = new StringBuilder();
+        
         stopTask.setTooltip(new Tooltip("Cancle Task"));
     }
 
@@ -229,23 +231,26 @@ public class FXMLDocumentController implements Initializable {
     private void generateDemoTextAndFill() {
 
         new Thread() {
-
+            
             String data = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n"
                     + "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n"
                     + "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n"
                     + "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n"
                     + "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n"
                     + "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\n";
+            
 
             @Override
             public void run() {
+                final int BUILDER_SIZE = (data.length()*data.length());
+                demoText = new StringBuilder(BUILDER_SIZE);
                 //Generate
                 for (int i = 0; i < data.length(); i++) {
-                    DemoText.append(data);
+                    demoText.append(data);
                 }
                 //Fill
                 Platform.runLater(() -> {
-                    input.setText(DemoText.toString());
+                    input.setText(demoText.toString());
                 });
 
             }
