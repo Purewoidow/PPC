@@ -6,8 +6,6 @@ import javafx.fxml.FXML;
 import java.util.HashMap;
 import javafx.concurrent.Task;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import javafx.event.ActionEvent;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -43,7 +41,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Label stopTask;
 
-    final ImageView DONE_ICON = new ImageView(new Image(getClass().getResourceAsStream("sign-check.png")));
+    final ImageView DONE_ICON = new ImageView(
+            new Image(getClass().getResourceAsStream("sign-check.png")));
 
     StringBuilder demoText;
 
@@ -51,7 +50,6 @@ public class FXMLDocumentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
         init();
         prepareMap(encodingMap);
         bindNodes();
@@ -59,10 +57,6 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void encrypt(ActionEvent event) {
-        progressMsg.setText("");
-        progressMsg.setGraphic(null);
-        progress.setTextFill(Color.web("#078ffa"));
-        output.clear();
         startTask();
     }//encrypt ENDS
 
@@ -77,9 +71,9 @@ public class FXMLDocumentController implements Initializable {
 
                 @Override
                 protected Void call() throws Exception {
-                    StringBuilder result = new StringBuilder();
                     String inputText = input.getText();
                     final float INPUT_LEN = inputText.length();
+                    StringBuilder result = new StringBuilder((int)INPUT_LEN);
 
                     start = System.nanoTime();
 
@@ -120,7 +114,7 @@ public class FXMLDocumentController implements Initializable {
     boolean wasStartedBefore = false;
 
     /**
-     * start or restart the task Note: Task<T>
+     * start or restart the task
      */
     private void startTask() {
 
@@ -140,32 +134,30 @@ public class FXMLDocumentController implements Initializable {
     }
 
     /**
-     * fills the @link{Map} with according to the algo <strong> ((i + 13) % 26 +
-     * c)</strong>
+     * fills the @link{Map} with chars according to the algo <strong> ((i + 13) % 26 +c)</strong>
      * <br> where i represents [a-z]
      * <br> where c represents the range of [a-z] and [A-Z]
      * <br>
-     * <b>Note : the Algorithm was copied form the python Module called
-     * "this"</b>
+     * <b>Note:the algorithm was copied form the python Module called "this"</b>
      *
      * @param map
      */
     private void prepareMap(Map map) {
-            //ExecutorService mappingTask = Executors.newFixedThreadPool(1);
-            //mappingTask.submit(() -> {
-            System.out.println("preparing map");
-            for (int c : new int[]{65, 97}) {
+        //ExecutorService mappingTask = Executors.newFixedThreadPool(1);
+        //mappingTask.submit(() -> {
+        System.out.println("preparing map");
+        for (int c : new int[]{65, 97}) {
 
-                for (int i = 0; i < 26; i++) {
+            for (int i = 0; i < 26; i++) {
 
-                    Character key = (char) (i + c);
-                    Character value = (char) ((i + 13) % 26 + c);
+                Character key = (char) (i + c);
+                Character value = (char) ((i + 13) % 26 + c);
 
-                    map.put(key, value);
-                }
+                map.put(key, value);
             }
-            //        });
-            //mappingTask.shutdown();
+        }
+        //        });
+        //mappingTask.shutdown();
     }//prepareMap ENDS
 
     //avoid re generating the text
@@ -223,8 +215,14 @@ public class FXMLDocumentController implements Initializable {
      */
     private void init() {
         encodingMap = new HashMap<>(52);
-
         stopTask.setTooltip(new Tooltip("Cancle Task"));
+        //Some House keeping 
+        task.setOnReady(e -> {
+            progressMsg.setText("");
+            progressMsg.setGraphic(null);
+            progress.setTextFill(Color.web("#078ffa"));
+            output.clear();
+        });
     }
 
     /**
@@ -232,7 +230,7 @@ public class FXMLDocumentController implements Initializable {
      */
     private void generateDemoTextAndFill() {
 
-        new Thread() {
+        new Thread() {//in future i am gonna use Executors
 
             String data = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n"
                     + "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n"
@@ -245,11 +243,11 @@ public class FXMLDocumentController implements Initializable {
             public void run() {
                 final int BUILDER_SIZE = (data.length() * data.length());
                 demoText = new StringBuilder(BUILDER_SIZE);
-                //Generate
+
                 for (int i = 0; i < data.length(); i++) {
                     demoText.append(data);
                 }
-                //Fill
+
                 Platform.runLater(() -> {
                     input.setText(demoText.toString());
                 });
