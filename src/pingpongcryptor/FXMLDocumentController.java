@@ -94,7 +94,6 @@ public class FXMLDocumentController implements Initializable {
                             updateMessage("Task Was Cancelled " + percent + "% was done");
                             break;
                         }
-//                        updateMessage("Processing... " +len +"/"+result.length());
 
                     }
                     stop = System.nanoTime();
@@ -111,7 +110,6 @@ public class FXMLDocumentController implements Initializable {
                     progressMsg.setText("Done. in " + (stop - start) / 1000000000.0 + " sec");
                     progressMsg.setGraphic(DONE_ICON);
                     updateMessage("");
-//        this.succeeded();
                 }
 
             };
@@ -153,8 +151,8 @@ public class FXMLDocumentController implements Initializable {
      * @param map
      */
     private void prepareMap(Map map) {
-//        ExecutorService mappingTask = Executors.newFixedThreadPool(1);
-//        mappingTask.submit(() -> {
+            //ExecutorService mappingTask = Executors.newFixedThreadPool(1);
+            //mappingTask.submit(() -> {
             System.out.println("preparing map");
             for (int c : new int[]{65, 97}) {
 
@@ -166,8 +164,8 @@ public class FXMLDocumentController implements Initializable {
                     map.put(key, value);
                 }
             }
-//        });
-//        mappingTask.shutdown();
+            //        });
+            //mappingTask.shutdown();
     }//prepareMap ENDS
 
     //avoid re generating the text
@@ -205,7 +203,7 @@ public class FXMLDocumentController implements Initializable {
      */
     private void bindNodes() {
 
-//      keep track of input field changes and update the counter
+        //keep track of input field changes and update the counter
         counter.textProperty().bind(input.textProperty().length().asString());
 
         //keep track of input field if its empty disable the encrypt/decrypt button
