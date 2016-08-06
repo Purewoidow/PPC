@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import java.util.HashMap;
 import javafx.concurrent.Task;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javafx.event.ActionEvent;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -111,8 +113,6 @@ public class FXMLDocumentController implements Initializable {
                     updateMessage("");
 //        this.succeeded();
                 }
-                
-                
 
             };
         }
@@ -153,17 +153,21 @@ public class FXMLDocumentController implements Initializable {
      * @param map
      */
     private void prepareMap(Map map) {
+//        ExecutorService mappingTask = Executors.newFixedThreadPool(1);
+//        mappingTask.submit(() -> {
+            System.out.println("preparing map");
+            for (int c : new int[]{65, 97}) {
 
-        for (int c : new int[]{65, 97}) {
+                for (int i = 0; i < 26; i++) {
 
-            for (int i = 0; i < 26; i++) {
+                    Character key = (char) (i + c);
+                    Character value = (char) ((i + 13) % 26 + c);
 
-                Character key = (char) (i + c);
-                Character value = (char) ((i + 13) % 26 + c);
-
-                map.put(key, value);
+                    map.put(key, value);
+                }
             }
-        }
+//        });
+//        mappingTask.shutdown();
     }//prepareMap ENDS
 
     //avoid re generating the text
@@ -221,7 +225,7 @@ public class FXMLDocumentController implements Initializable {
      */
     private void init() {
         encodingMap = new HashMap<>(52);
-        
+
         stopTask.setTooltip(new Tooltip("Cancle Task"));
     }
 
@@ -231,18 +235,17 @@ public class FXMLDocumentController implements Initializable {
     private void generateDemoTextAndFill() {
 
         new Thread() {
-            
+
             String data = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n"
                     + "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n"
                     + "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n"
                     + "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n"
                     + "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n"
                     + "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\n";
-            
 
             @Override
             public void run() {
-                final int BUILDER_SIZE = (data.length()*data.length());
+                final int BUILDER_SIZE = (data.length() * data.length());
                 demoText = new StringBuilder(BUILDER_SIZE);
                 //Generate
                 for (int i = 0; i < data.length(); i++) {
